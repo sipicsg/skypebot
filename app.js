@@ -29,6 +29,61 @@ server.post('/api/messages', connector.listen());
 * ---------------------------------------------------------------------------------------- */
 
 // Create your bot with a function to receive messages from the user
+// var bot = new builder.UniversalBot(connector), function (session) {
+//     session.send("You said: %s", session.message.text);
+// });
+
+var bot = new builder.UniversalBot(connector);
+
+// Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
-    session.send("You said: %s", session.message.text);
+  session.send("ConversionId is: %s", session.message.address.conversation);
 });
+
+
+/*
+bot.dialog('/', function (session) {
+    session.send("hi");
+});
+
+bot.on('conversationUpdate', function (message) {
+  console.log(message.address);
+  if (message.membersAdded && message.membersAdded.length > 0) {
+    var membersAdded = message.membersAdded
+        .map(function (m) {
+          var isSelf = m.id === message.address.bot.id;
+          return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
+        })
+        .join(', ');
+
+    bot.send(new builder.Message()
+        .address(message.address)
+        .text('Welcome ' + membersAdded));
+  }
+
+  if (message.membersRemoved && message.membersRemoved.length > 0) {
+    var membersRemoved = message.membersRemoved
+        .map(function (m) {
+          var isSelf = m.id === message.address.bot.id;
+          return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
+        })
+        .join(', ');
+
+    bot.send(new builder.Message()
+        .address(message.address)
+        .text('The following members ' + membersRemoved + ' were removed or left the conversation :('));
+  }
+});
+
+/*
+const express = require('express')
+const app = express()
+
+app.get('/message', (request, response) => {
+    var SkypeMessage = request.query.msg;
+    bot.getStorage().SendToConversationAsync
+    bot.send(SkypeMessage);
+});
+
+app.listen(3000);
+*/
